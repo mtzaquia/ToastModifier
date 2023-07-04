@@ -16,23 +16,23 @@ dependencies: [
 
 ```swift
 struct ContentView: View {
-	@State var isPresented = false
+  @State var isPresented = false
 
-	// ...
+  // ...
 
-	var body: some View {
-		Button(action: { isPresented = true }) {
-			Text("Present")
-		}
-		.toast(isPresented: $isPresented, dismissAfter: 4) {
-			MyPresentedView()
-		}
-	}
+  var body: some View {
+    Button(action: { isPresented = true }) {
+      Text("Present")
+    }
+    .toast(isPresented: $isPresented, dismissAfter: 4) {
+      MyPresentedView()
+    }
+  }
 }
 ```
 
 ## Credits
-Thanks to Kyle Bashour for tips on UIPresentationController. Available [here](https://kylebashour.com/posts/custom-view-controller-presentation-tips)
+Thanks to Kyle Bashour for tips on `UIPresentationController`. Available [here](https://kylebashour.com/posts/custom-view-controller-presentation-tips)
 
 ## License
 
