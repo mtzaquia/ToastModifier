@@ -25,13 +25,16 @@ final class ToastPresentationController: UIPresentationController {
     init(
         presentedViewController: UIViewController,
         presenting presentingViewController: UIViewController?,
+        source: UIViewController,
         edgeInsets: NSDirectionalEdgeInsets
     ) {
+        self.source = source
         self.edgeInsets = edgeInsets
         super.init(presentedViewController: presentedViewController, presenting: presentingViewController)
     }
 
-    var edgeInsets: NSDirectionalEdgeInsets
+    private var source: UIViewController
+    private var edgeInsets: NSDirectionalEdgeInsets
 
     private var calculatedFrameOfPresentedViewInContainerView = CGRect.zero
     private var shouldSetFrameWhenAccessingPresentedView = false
@@ -91,7 +94,7 @@ final class ToastPresentationController: UIPresentationController {
 
         guard let containerView else { return }
 
-        let passthroughView = PassthroughView(targetView: presentingViewController.view)
+        let passthroughView = PassthroughView(targetView: source.view)
         containerView.addSubview(passthroughView)
         NSLayoutConstraint.activate([
             passthroughView.topAnchor.constraint(equalTo: containerView.topAnchor),
