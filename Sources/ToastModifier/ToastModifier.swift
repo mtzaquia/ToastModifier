@@ -71,16 +71,23 @@ private struct _ToastModifier<Toast: View>: ViewModifier {
     let dismissAfter: Int
     let toast: () -> Toast
 
+    @State private var dismissTask: Task<Void, Never>?
+
     func body(content: Content) -> some View {
         content
             .presentation(isPresented: $isPresented) {
                 toast()
                     .onAppear {
                         if dismissAfter > 0 {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + Double(dismissAfter)) {
+                            dismissTask = Task {
+                                try? await Task.sleep(nanoseconds: UInt64(dismissAfter * 1_000_000_000))
+                                if Task.isCancelled { return }
                                 isPresented = false
                             }
                         }
+                    }
+                    .onDisappear {
+                        dismissTask?.cancel()
                     }
             } controllerProvider: { toast in
                 ToastHostingController(
